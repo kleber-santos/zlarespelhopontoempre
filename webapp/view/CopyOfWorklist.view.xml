@@ -1,0 +1,68 @@
+<mvc:View controllerName="whr.com.br.ZLAREspelhoPontoEmpre.controller.Worklist" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
+	<l:VerticalLayout width="100%">
+				<fb:FilterBar reset="onReset" showRestoreButton="true" showClearButton="false" showFilterConfiguration="false">
+					<fb:filterItems>
+						<fb:FilterItem name="A" label="Data Início">
+							<fb:control>
+								<DatePicker id="DataInicio" width="140px" placeholder="" displayFormat="dd/MM/yyyy" valueFormat="yyyy-MM-dd" change="handleChange"
+									class="sapUiSmallMarginBottom"/>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="B" label="Data Fim">
+							<fb:control>
+								<DatePicker id="DataFim" width="140px" placeholder="" displayFormat="dd/MM/yyyy" valueFormat="yyyy-MM-dd" change="handleChange"
+									class="sapUiSmallMarginBottom"/>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="C" label="Tipo de Relatório">
+							<fb:control>
+								<RadioButtonGroup columns="2" class="sapUiMediumMarginBottom" select="onSelectTipo">
+									<buttons>
+										<RadioButton id="Analitico" text="Analítico" selected="true"/>
+										<RadioButton id="Sintetico" text="Sintetíco"/>
+									</buttons>
+								</RadioButtonGroup>
+							</fb:control>
+						</fb:FilterItem>
+					</fb:filterItems>
+				</fb:FilterBar>
+			</l:VerticalLayout>
+	
+	<semantic:SemanticPage id="page" headerPinnable="false" toggleHeaderOnTitleClick="false">
+		
+		<semantic:content>
+			
+			<Table id="table" width="auto" items="{ path: '/ESPELHO_PONTOSet', sorter: { path: 'Cname', descending: false } }"
+				noDataText="{worklistView>/tableNoDataText}" busyIndicatorDelay="{worklistView>/tableBusyDelay}" growing="true" growingScrollToLoad="true"
+				updateFinished="onUpdateFinished">
+				<headerToolbar>
+					<Toolbar>
+						<Title id="tableHeader" text="{worklistView>/worklistTableTitle}"/>
+						<ToolbarSpacer/>
+						<SearchField id="searchField" tooltip="{i18n>worklistSearchTooltip}" search="onSearch" width="auto"></SearchField>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column id="nameColumn">
+						<Text text="{i18n>tableNameColumnTitle}" id="nameColumnTitle"/>
+					</Column>
+					<Column id="unitNumberColumn" hAlign="End">
+						<Text text="{i18n>tableUnitNumberColumnTitle}" id="unitNumberColumnTitle"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="onPress">
+						<cells>
+							<ObjectIdentifier title="{Cname}"/>
+							<ObjectNumber number="{ path: 'ZlAnzhl', formatter: '.formatter.numberUnit' }"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press="onShareEmailPress"/>
+		</semantic:sendEmailAction>
+	</semantic:SemanticPage>
+</mvc:View>
